@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazon Buckets</title>
+	
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="static/materialize/css/materialize.min.css" media="screen,projection" />
+    <!-- Bootstrap Styles-->
+    <link href="static/css/bootstrap.css" rel="stylesheet" />
+    <!-- FontAwesome Styles-->
+    <link href="static/css/font-awesome.css" rel="stylesheet" />
+    <!-- Morris Chart Styles-->
+    <link href="static/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <!-- Custom Styles-->
+    <link href="static/css/custom-styles.css" rel="stylesheet" />
+    <!-- Google Fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="static/js/Lightweight-Chart/cssCharts.css">
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand waves-effect waves-dark" href="{% url 'buckets' %}"><i class="large material-icons">insert_chart</i> <strong>BUCKETS</strong></a>
+				
+		<div id="sideNav" href=""><i class="material-icons dp48">toc</i></div>
+            </div>
+            {% block header %}
+
+            {% endblock %}
+        </nav>
+</ul>  
+	   <!--/. NAV TOP  -->
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    
+                    {% if current_sidebar == "buckets" %}
+                        <li>
+                            <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-table"></i> Бакеты</a>
+                        </li>
+                        <li>
+                            <a href="#" class="waves-effect waves-dark"><i class="fa fa-file"></i>JSON<span class="fa arrow"></span></a>
+                            <ul id="myMenu" class="nav nav-second-level">
+                            <input style="width: 80%; margin-left: 15px;" type="text" id="mySearch" onkeyup="search()" placeholder="Найти бакет" title="Type in a category">
+                                {% for bucket in data %}
+                                <li>
+                                    <a href="{% url 'json' %}?json={{ bucket.Name }}">{{ bucket.Name }}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'buckets' %}" class="waves-effect waves-dark"><i class="fa fa-table"></i> Бакеты</a>
+                        </li>
+                        {% if current_sidebar == "json" %}
+                            <li>
+                                <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-file"></i> JSON-файлы
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul id="myMenu" class="nav nav-second-level">
+                                <input style="width: 80%; margin-left: 15px;" type="text" id="mySearch" onkeyup="search()" placeholder="Найти бакет" title="Type in a category">
+                                    {% for name in names %}
+                                        <li>
+                                            <a href="{% url 'json' %}?json={{ name.Name }}">{{ name.Name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'json' %}" class="waves-effect waves-dark"><i class="fa fa-file"></i> JSON-файлы
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul id="myMenu" class="nav nav-second-level">
+                                    <input style="width: 80%; margin-left: 15px;" type="text" id="mySearch" onkeyup="search()" placeholder="Найти бакет" title="Type in a category">
+                                    {% for name in names %}
+                                        <li>
+                                            <a href="{% url 'json' %}?json={{ name.Name }}">{{ name.Name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    {% if current_sidebar == "param" %}
+                        <li>
+                            <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-gears"></i> Параметры</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'settings' %}" class="waves-effect waves-dark"><i class="fa fa-gears"></i> Параметры</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- /. NAV SIDE  -->
+        {% block content %}
+            
+        {% endblock %}
+         <!-- /. PAGE WRAPPER  -->
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+ 
+
+    <!-- jQuery Js -->
+    <script src="static/js/jquery-1.10.2.js"></script>
+	
+	<!-- Bootstrap Js -->
+    <script src="static/js/bootstrap.min.js"></script>
+	
+	<script src="static/materialize/js/materialize.min.js"></script>
+	
+    <!-- Metis Menu Js -->
+    <script src="static/js/jquery.metisMenu.js"></script>
+    <!-- Morris Chart Js -->
+    <script src="static/js/morris/raphael-2.1.0.min.js"></script>
+    <script src="static/js/morris/morris.js"></script>
+	
+	
+	<script src="static/js/easypiechart.js"></script>
+	<script src="static/js/easypiechart-data.js"></script>
+
+    <script src="static/js/clipboard.js/dist/clipboard.min.js"></script>
+
+	
+	 <script src="static/js/Lightweight-Chart/jquery.chart.js"></script>
+	 <!-- DATA TABLE SCRIPTS -->
+    <script src="static/js/dataTables/jquery.dataTables.js"></script>
+    <script src="static/js/dataTables/dataTables.bootstrap.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').dataTable();
+            });
+    </script>
+    <!-- Custom Js -->
+    <script src="static/js/custom-scripts.js"></script> 
+ 
+    <script>
+        function delete_file(){
+            let check = false
+            for (const track of document.getElementsByClassName('check')) {
+                if(track.checked) {
+                    check = true
+                }
+        }
+        if (check) {
+          var proceed = confirm("Вы уверенны что хотите удалить выбранные файлы?");
+          if (proceed) {
+            let form = document.getElementById('delete_jsons');
+            form.action = "{% url 'json' %}?json={{ bucket }}";
+            document.body.append(form);
+            form.submit();
+          }
+        } else {
+            alert("Выберите файлы, которые хотите удалить!")
+        }
+        }
+
+function delete_bucket(){
+    let check = false
+    for (const track of document.getElementsByClassName('check')) {
+        if(track.checked) {
+            check = true
+        }
+    }
+    if (check) {
+  var proceed = confirm("Вы уверенны что хотите удалить выбранные бакеты, вместе со всем содержимым?");
+  if (proceed) {
+    let form = document.getElementById('delete_buckets');
+    form.action = "{% url 'buckets' %}";
+    document.body.append(form);
+    form.submit();
+  }
+} else {
+    alert("Выберите бакеты, которые хотите удалить!")
+}
+}
+
+function checkInput() {
+    for (const track of document.getElementsByClassName('validate')) {
+        if(track.value === '') {
+            alert('Заполните все поля!')
+            return;
+        }
+    }
+    let form = document.getElementById('add_file');
+    form.action = "{% url 'json' %}?json={{ bucket_name }}";
+    document.body.append(form);
+    form.submit();
+}
+
+function checkInputBuckets() {
+    for (const track of document.getElementsByClassName('validate')) {
+        if(track.value === '') {
+            alert('Заполните все поля!')
+            return;
+        }
+    }
+    let form = document.getElementById('add_bucket');
+    form.action = "{% url 'buckets' %}";
+    document.body.append(form);
+    form.submit();
+}
+
+function checkInputSettings() {
+    for (const track of document.getElementsByClassName('validate')) {
+        if(track.value === '') {
+            alert('Заполните все поля!')
+            return;
+        }
+    }
+    let form = document.getElementById('config');
+    form.action = "{% url 'settings' %}";
+    document.body.append(form);
+    form.submit();
+}
+
+function urlFormJson(){
+    document.location.href = "{% url 'form_json' %}?bucket={{ bucket }}";
+}
+
+function urlFormBucket(){
+    document.location.href = "{% url 'form_bucket' %}";
+}
+    </script>
+</body>
+
+</html>

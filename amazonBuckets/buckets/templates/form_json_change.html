@@ -1,0 +1,79 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<div id="page-wrapper">
+  <div class="header">
+    <h1 class="page-header">JSON-файл</h1>
+    <ol class="breadcrumb">
+      <li><a href="{% url 'buckets' %}">Buckets</a></li>
+      <li>JSON-файл</li>
+      <li><strong>File</strong></li>
+    </ol>
+  </div>
+
+  <div id="page-inner">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-action">{{ bucket_name }}</div>
+          <div class="card-content">
+            <form id="add_file" class="col s12" method="POST">
+              {% csrf_token %}
+              <input type="text" name="bucket_name" style="display:none;" value='{{ bucket_name }}'/>
+              <input type="text" name="from" style="display:none;" value='change'/>
+              <input type="text" name="name" style="display:none;" value='{{ file_name }}'/>
+              <div class="row">
+                <div class="col s6">
+                  <label for="Admobnumb">Номер AdMob</label>
+                  <input type="text" name="Admobnumb" class="validate" value="{{ data.Admobnumb }}"/>
+                </div>
+                <div class="col s6">
+                  <label for="Version">Версия</label>
+                  <input type="text" name="Version" class="validate" value="{{ data.Version }}"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <label for="AppId">ID приложения</label>
+                  <input type="text" name="AppId" class="validate" value="{{ data.AppId }}"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <label for="BannerId">ID баннера</label>
+                  <input type="text" name="BannerId" class="validate" value="{{ data.BannerId }}"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <label for="InterstitialAdId">Межстраничное Add ID</label>
+                  <input type="text" name="InterstitialAdId" class="validate" value="{{ data.InterstitialAdId }}"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <label for="RewardedAdId">Add ID с вознаграждением</label>
+                  <input type="text" name="RewardedAdId" class="validate" value="{{ data.RewardedAdId }}"/>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <label for="NativeAdId">Нативный Add ID'</label>
+                  <input type="text" name="NativeAdId" class="validate" value="{{ data.NativeAdId }}"/>
+                </div>
+              </div>
+              <div class="center">
+                <a class="waves-effect waves-light btn" onclick="checkInput()">Обновить файл</a>
+              </div>
+            </form>
+            <div class="clearBoth"></div>
+          </div>
+        </div>
+      </div>
+      <footer><p>Designed by: @maksym_drv</p></footer>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

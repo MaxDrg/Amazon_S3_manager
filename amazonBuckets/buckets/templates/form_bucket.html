@@ -1,0 +1,75 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+{% if error_message %}
+  <script>alert("Не удалось создать бакет с таким именем!")</script>
+{% endif %}
+
+<div id="page-wrapper">
+    <div class="header">
+      <h1 class="page-header">Создание бакета</h1>
+      <ol class="breadcrumb">
+        <li><a href="{% url 'buckets' %}">Buckets</a></li>
+        <li>JSON-файл</li>
+        <li><strong>Bucket</strong></li>
+      </ol>
+    </div>
+  
+    <div id="page-inner">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-content">
+              <form id="add_bucket" class="col s12" method="POST">
+                {% csrf_token %}
+                <input type="text" name="from" style="display:none;" value='form'/>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input type="text" name="bucket_name" class="validate" />
+                    <label for="bucket_name">Название бакета</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12">
+                    <label for="region_name">Регион</label>
+                    <select name="region_name">
+                      <option value="us-east-1">US East (N. Virginia) us-east-1</option>
+                      <option value="us-east-2">US East (Ohio) us-east-2</option>
+                      <option value="us-west-1">US West (N. California) us-west-1</option>
+                      <option value="us-west-2">US West (Oregon) us-west-2</option>
+                      <option value="af-south-1">Africa (Cape Town) af-south-1</option>
+                      <option value="ap-east-1">Asia Pacific (Hong Kong) ap-east-1</option>
+                      <option value="ap-southeast-3">Asia Pacific (Jakarta) ap-southeast-3</option>
+                      <option value="ap-south-1">Asia Pacific (Mumbai) ap-south-1</option>
+                      <option value="ap-northeast-3">Asia Pacific (Osaka) ap-northeast-3</option>
+                      <option value="ap-northeast-2">Asia Pacific (Seoul) ap-northeast-2</option>
+                      <option value="ap-southeast-1">Asia Pacific (Singapore) ap-southeast-1</option>
+                      <option value="ap-southeast-2">Asia Pacific (Sydney) ap-southeast-2</option>
+                      <option value="ap-northeast-1">Asia Pacific (Tokyo) ap-northeast-1</option>
+                      <option value="ca-central-1">Canada (Central) ca-central-1</option>
+                      <option value="eu-central-1">EU (Frankfurt) eu-central-1</option>
+                      <option value="eu-west-1">EU (Ireland) eu-west-1</option>
+                      <option value="eu-west-2">EU (London) eu-west-2</option>
+                      <option value="eu-south-1">EU (Milan) eu-south-1</option>
+                      <option value="eu-west-3">EU (Paris) eu-west-3</option>
+                      <option value="me-south-1">Middle East (Bahrain) me-south-1</option>
+                      <option value="sa-east-1">South America (São Paulo) sa-east-1</option>
+                    </select>
+                    <!-- <input type="text" name="region_name" class="validate" /> -->
+                  </div>
+                </div>
+                <div class="center">
+                  <a class="waves-effect waves-light btn" onclick="checkInputBuckets()">Создать бакет</a>
+                </div>
+              </form>
+              <div class="clearBoth"></div>
+            </div>
+          </div>
+        </div>
+        <footer><p>Designed by: @maksym_drv</p></footer>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

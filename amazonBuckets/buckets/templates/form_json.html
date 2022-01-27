@@ -1,0 +1,78 @@
+﻿{% extends 'base.html' %} 
+
+{% block content %}
+
+<div id="page-wrapper">
+  <div class="header">
+    <h1 class="page-header">Создание JSON-файла</h1>
+    <ol class="breadcrumb">
+      <li><a href="{% url 'buckets' %}">Buckets</a></li>
+      <li>JSON-файл</li>
+      <li><strong>File</strong></li>
+    </ol>
+  </div>
+
+  <div id="page-inner">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-action">{{ bucket_name }}</div>
+          <div class="card-content">
+            <form id="add_file" class="col s12" method="POST">
+              {% csrf_token %}
+              <input type="text" name="bucket_name" style="display:none;" value='{{ bucket_name }}'/>
+              <input type="text" name="from" style="display:none;" value='form'/>
+              <div class="row">
+                <div class="input-field col s6">
+                  <input type="text" name="Admobnumb" class="validate"/>
+                  <label for="Admobnumb">Номер AdMob</label>
+                </div>
+                <div class="input-field col s6">
+                  <input type="text" name="Version" class="validate" />
+                  <label for="Version">Версия</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="AppId" class="validate" />
+                  <label for="AppId">ID приложения</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="BannerId" class="validate" />
+                  <label for="BannerId">ID баннера</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="InterstitialAdId" class="validate" />
+                  <label for="InterstitialAdId">Межстраничное Add ID</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="RewardedAdId" class="validate" />
+                  <label for="RewardedAdId">Add ID с вознаграждением</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input type="text" name="NativeAdId" class="validate" />
+                  <label for="NativeAdId">Нативный Add ID'</label>
+                </div>
+              </div>
+              <div class="center">
+                <a class="waves-effect waves-light btn" onclick="checkInput()">Добавить файл</a>
+              </div>
+            </form>
+            <div class="clearBoth"></div>
+          </div>
+        </div>
+      </div>
+      <footer><p>Designed by: @maksym_drv</p></footer>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

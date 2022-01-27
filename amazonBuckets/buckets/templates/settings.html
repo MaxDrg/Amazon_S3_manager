@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="page-wrapper">
+    <div class="header">
+      <h1 class="page-header">Параметры</h1>
+      <ol class="breadcrumb">
+        <li><a href="{% url 'buckets' %}">Buckets</a></li>
+        <li>JSON-файл</li>
+        <li>Bucket</li>
+      </ol>
+    </div>
+  
+    <div id="page-inner">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-content">
+              <form id="config" class="col s12" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col s12">
+                    <label for="aws_access_key_id">Ключ доступа</label>
+                    <input type="text" name="aws_access_key_id" class="validate" value="{{ data.aws_access_key_id }}" />
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                      <label for="aws_secret_access_key">Секретный ключ</label>
+                      <input type="text" name="aws_secret_access_key" class="validate" value="{{ data.aws_secret_access_key }}" />
+                    </div>
+                  </div>
+                <div class="center">
+                  <a class="waves-effect waves-light btn" onclick="checkInputSettings()">Обновить параметры</a>
+                </div>
+              </form>
+              <div class="clearBoth"></div>
+            </div>
+          </div>
+        </div>
+        <footer><p>Designed by: @maksym_drv</p></footer>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
