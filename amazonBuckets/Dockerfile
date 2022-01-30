@@ -1,6 +1,6 @@
 FROM python:3.10.2-alpine
 # set work directory
-WORKDIR /app
+WORKDIR /manager
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -18,4 +18,4 @@ COPY ./entrypoint.sh .
 # copy project
 COPY . .
 # run entrypoint.sh
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/manager/entrypoint.sh"]
