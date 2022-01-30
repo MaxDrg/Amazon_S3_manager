@@ -1,6 +1,6 @@
 FROM python:3.10.2-alpine
 # set work directory
-WORKDIR /manager
+WORKDIR /amazon_s3_manager
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -18,4 +18,4 @@ COPY ./entrypoint.sh .
 # copy project
 COPY . .
 # run entrypoint.sh
-ENTRYPOINT ["/manager/entrypoint.sh"]
+ENTRYPOINT ["/amazon_s3_manager/entrypoint.sh"]

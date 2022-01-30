@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class BucketsConfig(AppConfig):
+class BucketsManagerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'buckets'
+    name = 'buckets_manager'
