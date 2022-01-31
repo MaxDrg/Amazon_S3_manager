@@ -37,7 +37,7 @@
               <form id="delete_jsons" method="POST">
                 {% csrf_token %}
                 <input type="text" name="bucket_name" style="display:none;" value='{{ bucket }}'/>
-                <input type="text" name="from" style="display:none;" value='json'/>
+                <input type="text" name="from" style="display:none;" value='files_json'/>
                 <table
                   class="table table-striped table-bordered table-hover"
                   id="dataTables-example">
@@ -57,13 +57,13 @@
                           type="checkbox"
                           class="check"
                           name="list_data"
-                          value="{{ json.Name }}"/>
+                          value="{{ json.id }}"/>
                       </td>
-                      <td>{{ json.Name }}</td>
-                      <td>{{ json.Date }}</td>
+                      <td>{{ json.file_name }}</td>
+                      <td>{{ json.last_update }}</td>
                       <td class="center"  style=" display: flex; flex-wrap: wrap; justify-content: space-around;">
-                        <a href="{% url 'form_json' %}?bucket={{ bucket }}&key={{ json.Name }}"><i style="font-size: 23px;" class="fa fa-edit fa-fw"></i></a>
-                        <a class="dropdown-button waves-effect waves-dark" id="copyUrl" data-clipboard-text="https://{{ bucket }}.s3.{{ region }}.amazonaws.com/{{ json.Name }}.json">
+                        <a href="{% url 'form_json' %}?bucket={{ bucket }}&key={{ json.file_name }}"><i style="font-size: 23px;" class="fa fa-edit fa-fw"></i></a>
+                        <a class="dropdown-button waves-effect waves-dark" id="copyUrl" data-clipboard-text="https://{{ bucket }}.s3.{{ region }}.amazonaws.com/{{ json.file_name }}.json">
                           <i style="font-size: 21px;" class="fa fa-copy fa-fw"></i>
                         </a>
                       </td>

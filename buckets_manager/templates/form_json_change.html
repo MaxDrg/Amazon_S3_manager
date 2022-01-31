@@ -21,7 +21,7 @@
             <form id="add_file" class="col s12" method="POST">
               {% csrf_token %}
               <input type="text" name="bucket_name" style="display:none;" value='{{ bucket_name }}'/>
-              <input type="text" name="from" style="display:none;" value='change'/>
+              <input type="text" name="from" style="display:none;" value='change_json'/>
               <input type="text" name="name" style="display:none;" value='{{ file_name }}'/>
               <div class="row">
                 <div class="col s6">

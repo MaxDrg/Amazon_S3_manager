@@ -58,14 +58,14 @@
                       <input
                         type="checkbox"
                         class="check"
-                        name="list_data"
-                        value="{{ bucket.Name }}"/>
+                        name="data_list"
+                        value="{{ bucket.id }}"/>
                     </td>
                     <td>{{ forloop.counter }}</td>
-                    <td><a style="color: #333;" href="{% url 'json' %}?json={{ bucket.Name }}">{{ bucket.Name }}</a></td>
-                    <td>{{ bucket.Region }}</td>
-                    <td>{{ bucket.Date }}</td>
-                    <td>{{ bucket.Count }}</td>
+                    <td><a style="color: #333;" href="{% url 'files_json' %}?bucket={{ bucket.bucket_name }}">{{ bucket.bucket_name }}</a></td>
+                    <td>{{ bucket.region_name }}</td>
+                    <td>{{ bucket.created }}</td>
+                    <td>{{ bucket.count }}</td>
                   </tr>
                   {% endfor %}
                 </tbody>

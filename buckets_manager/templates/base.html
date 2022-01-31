@@ -44,18 +44,17 @@
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
-                    
                     {% if current_sidebar == "buckets" %}
-                        <li>
-                            <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-table"></i> Бакеты</a>
-                        </li>
-                        <li>
+                      <li>
+                          <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-table"></i> Бакеты</a>
+                      </li>
+                      <li>
                             <a href="" class="waves-effect waves-dark"><i class="fa fa-file"></i>JSON<span class="fa arrow"></span></a>
                             <ul id="myMenu" class="nav nav-second-level">
                             <input style="width: 80%; margin-left: 15px;" type="text" id="mySearch" onkeyup="search()" placeholder="Найти бакет" title="Type in a category">
                                 {% for bucket in data %}
                                 <li>
-                                    <a href="{% url 'json' %}?json={{ bucket.Name }}">{{ bucket.Name }}</a>
+                                    <a href="{% url 'files_json' %}?bucket={{ bucket.bucket_name }}">{{ bucket.bucket_name }}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -64,37 +63,28 @@
                         <li>
                             <a href="{% url 'buckets' %}" class="waves-effect waves-dark"><i class="fa fa-table"></i> Бакеты</a>
                         </li>
+                        <li>
                         {% if current_sidebar == "json" %}
-                            <li>
-                                <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-file"></i> JSON-файлы
-                                    <span class="fa arrow"></span>
-                                </a>
-                                <ul id="myMenu" class="nav nav-second-level">
-                                <input style="width: 80%; margin-left: 15px;" type="text" id="mySearch" onkeyup="search()" placeholder="Найти бакет" title="Type in a category">
-                                    {% for name in names %}
-                                        <li>
-                                            <a href="{% url 'json' %}?json={{ name.Name }}">{{ name.Name }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
+                          <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-file"></i> JSON-файлы
+                              <span class="fa arrow"></span>
+                          </a>
                         {% else %}
-                            <li>
-                                <a href="{% url 'json' %}" class="waves-effect waves-dark"><i class="fa fa-file"></i> JSON-файлы
-                                    <span class="fa arrow"></span>
-                                </a>
-                                <ul id="myMenu" class="nav nav-second-level">
-                                    <input style="width: 80%; margin-left: 15px;" type="text" id="mySearch" onkeyup="search()" placeholder="Найти бакет" title="Type in a category">
-                                    {% for name in names %}
-                                        <li>
-                                            <a href="{% url 'json' %}?json={{ name.Name }}">{{ name.Name }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
+                          <a href="" class="waves-effect waves-dark"><i class="fa fa-file"></i> JSON-файлы
+                            <span class="fa arrow"></span>
+                          </a>
                         {% endif %}
+                        <ul id="myMenu" class="nav nav-second-level">
+                          <input style="width: 80%; margin-left: 15px;" type="text" id="mySearch" onkeyup="search()" placeholder="Найти бакет" title="Type in a category">
+                            {% for bucket_name in buckets_names %}
+                              <li>
+                                <a href="{% url 'files_json' %}?bucket={{ bucket_name.bucket_name }}">{{ bucket_name.bucket_name }}</a>
+                              </li>
+                            {% endfor %}
+                        </ul>
+                      </li>
                     {% endif %}
-                    {% if current_sidebar == "param" %}
+
+                    {% if current_sidebar == "settings" %}
                         <li>
                             <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-gears"></i> Параметры</a>
                         </li>
@@ -160,7 +150,7 @@
             var proceed = confirm("Вы уверенны что хотите удалить выбранные файлы?");
             if (proceed) {
               let form = document.getElementById("delete_jsons");
-              form.action = "{% url 'json' %}?json={{ bucket }}";
+              form.action = "{% url 'files_json' %}?bucket={{ bucket }}";
               document.body.append(form);
               form.submit();
             }
@@ -199,7 +189,7 @@
             }
           }
           let form = document.getElementById("add_file");
-          form.action = "{% url 'json' %}?json={{ bucket_name }}";
+          form.action = "{% url 'files_json' %}?bucket={{ bucket_name }}";
           document.body.append(form);
           form.submit();
         }

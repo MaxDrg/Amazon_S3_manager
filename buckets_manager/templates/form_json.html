@@ -21,7 +21,7 @@
             <form id="add_file" class="col s12" method="POST">
               {% csrf_token %}
               <input type="text" name="bucket_name" style="display:none;" value='{{ bucket_name }}'/>
-              <input type="text" name="from" style="display:none;" value='form'/>
+              <input type="text" name="from" style="display:none;" value='form_json'/>
               <div class="row">
                 <div class="input-field col s6">
                   <input type="text" name="Admobnumb" class="validate"/>
