@@ -88,17 +88,20 @@ class Amazon:
 
     def get_files(self, bucket_name):
         data = []
-        for file in self.client.list_objects(Bucket=bucket_name):
-            try:
-                content = self.client.get_object(
-                    Bucket = bucket_name,
-                    Key = file['Contents']['Key']
-                )
-                data.append(File_data(
-                    file['Contents']['Key'].split('.')[0], 
-                    datetime.datetime.strftime(file['Contents']['LastModified'], "%d/%m/%y %H:%M"),
-                    json.load(content['Body'])
-                ))
-            except:
-                pass
+        try:
+            for file in self.client.list_objects(Bucket=bucket_name):
+                try:
+                    content = self.client.get_object(
+                        Bucket = bucket_name,
+                        Key = file['Contents']['Key']
+                    )
+                    data.append(File_data(
+                        file['Contents']['Key'].split('.')[0], 
+                        datetime.datetime.strftime(file['Contents']['LastModified'], "%d/%m/%y %H:%M"),
+                        json.load(content['Body'])
+                    ))
+                except:
+                    pass
+        except:
+            pass
         return data
