@@ -4,7 +4,7 @@ services:
   web:
     image: amazon_s3_manager:1.1.1
     build: .
-    command: gunicorn amazon_s3_manager.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn amazon_s3_manager.wsgi:application --bind 0.0.0.0:8000 --timeout 200
     volumes:
       - .:/amazon_s3_manager
       - static:/static/

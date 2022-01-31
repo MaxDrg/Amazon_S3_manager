@@ -1,21 +1,22 @@
-﻿{% extends 'base.html' %} 
-
-{% block header %}
+﻿{% extends 'base.html' %} {% block header %}
 
 <ul class="nav navbar-top-links navbar-right">
   <li>
     <a class="dropdown-button waves-effect waves-dark" onclick="urlFormBucket()"
-      ><i class="fa fa-upload fa-fw"></i> <b>Добавить бакет</b></a>
+      ><i class="fa fa-upload fa-fw"></i> <b>Добавить бакет</b></a
+    >
   </li>
   <li>
-    <a class="dropdown-button waves-effect waves-dark" href="#!" onclick="delete_bucket()"
-      ><i class="fa fa-edit fa-fw"></i> <b>Удалить бакеты</b></a>
+    <a
+      class="dropdown-button waves-effect waves-dark"
+      href="#!"
+      onclick="delete_bucket()"
+      ><i class="fa fa-edit fa-fw"></i> <b>Удалить бакеты</b></a
+    >
   </li>
 </ul>
 
-{% endblock %} 
-
-{% block content %}
+{% endblock %} {% block content %}
 
 <div id="page-wrapper">
   <div class="header">
@@ -37,39 +38,69 @@
             <div class="table-responsive">
               <form id="delete_buckets" method="POST">
                 {% csrf_token %}
-                <input type="text" name="from" style="display:none;" value='buckets'/>
-              <table
-                class="table table-striped table-bordered table-hover"
-                id="dataTables-example">
-                <thead>
-                  <tr>
-                    <th class="center">Выбрать</th>
-                    <th>Номер</th>
-                    <th>Название</th>
-                    <th>Регион</th>
-                    <th>Создан</th>
-                    <th>Количество файлов</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for bucket in data %}
-                  <tr class="odd gradeX">
-                    <td class="center">
-                      <input
-                        type="checkbox"
-                        class="check"
-                        name="data_list"
-                        value="{{ bucket.id }}"/>
-                    </td>
-                    <td>{{ forloop.counter }}</td>
-                    <td><a style="color: #333;" href="{% url 'files_json' %}?bucket={{ bucket.bucket_name }}">{{ bucket.bucket_name }}</a></td>
-                    <td>{{ bucket.region_name }}</td>
-                    <td>{{ bucket.created }}</td>
-                    <td>{{ bucket.count }}</td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+                <input
+                  type="text"
+                  name="from"
+                  style="display: none"
+                  value="buckets"
+                />
+                <table
+                  class="table table-striped table-bordered table-hover"
+                  id="dataTables-example"
+                >
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div
+                        id="dataTables-example_filter"
+                        class="dataTables_filter"
+                      >
+                        <label
+                          >Search:<input
+                            type="search"
+                            class="form-control input-sm"
+                            aria-controls="dataTables-example"
+                            id="search-info" 
+                            onkeyup="tableSearch()"
+                        /></label>
+                      </div>
+                    </div>
+                  </div>
+                  <thead>
+                    <tr>
+                      <th class="center">Выбрать</th>
+                      <th>Номер</th>
+                      <th>Название</th>
+                      <th>Регион</th>
+                      <th>Создан</th>
+                      <th>Количество файлов</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for bucket in data %}
+                    <tr class="odd gradeX">
+                      <td class="center">
+                        <input
+                          type="checkbox"
+                          class="check"
+                          name="data_list"
+                          value="{{ bucket.id }}"
+                        />
+                      </td>
+                      <td>{{ forloop.counter }}</td>
+                      <td>
+                        <a
+                          style="color: #333"
+                          href="{% url 'files_json' %}?bucket={{ bucket.bucket_name }}"
+                          >{{ bucket.bucket_name }}</a
+                        >
+                      </td>
+                      <td>{{ bucket.region_name }}</td>
+                      <td>{{ bucket.created }}</td>
+                      <td>{{ bucket.count }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </form>
             </div>
           </div>
@@ -78,9 +109,7 @@
       </div>
     </div>
     <footer>
-      <p>
-        Designed by: @maksym_drv
-      </p>
+      <p>Designed by: @maksym_drv</p>
     </footer>
   </div>
 </div>
