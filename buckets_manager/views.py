@@ -1,10 +1,11 @@
 from datetime import datetime
 from django.shortcuts import render
-import pytz
 from . import amazon
 from . import json_data
 from . import models
+import threading
 import json
+import pytz
 
 class Bucket:
     def __init__(self, id, bucket_name, region_name,created ,count) -> None:
@@ -21,15 +22,19 @@ def buckets(request):
         files = json_data.Data('json/data.json')
         s3 = amazon.Amazon(files.get_data())
         if request.POST['from'] == 'buckets':
+            id_list = []
             for data_id in request.POST.getlist('data_list'):
-                s3.delete_bucket(models.buckets.objects.filter(id = data_id).values('bucket_name')[0]['bucket_name'])
                 models.buckets.objects.filter(id = data_id).delete()
+                id_list.append(data_id)
+            threading.Thread(
+                target=delete_buckets,
+                args=(id_list, )
+            ).start()
         elif request.POST['from'] == 'form':
             response = s3.create_bucket(
                 request.POST['bucket_name'], 
                 request.POST['region_name']
             )
-            response = False
             if response:
                 return render(request, "form_bucket.html", {"current_sidebar": '', 
                 "names": models.buckets.objects.all(), "error_message": response})
@@ -38,7 +43,6 @@ def buckets(request):
                     bucket_name = request.POST['bucket_name'],
                     region_name = request.POST['region_name'],
                     created = datetime.now(pytz.timezone('Europe/Kiev')).strftime("%d/%m/%y %H:%M"),
-                    count = 0
                 ).save()
     data = []
     for bucket in models.buckets.objects.all():
@@ -54,7 +58,6 @@ def buckets(request):
 
 def files_json(request):
     current_sidebar = "json"
-    data = []
     bucket_name = ''
     bucket_id = 0
     
@@ -67,12 +70,14 @@ def files_json(request):
         s3 = amazon.Amazon(files.get_data())
         bucket_id = models.buckets.objects.filter(bucket_name=bucket_name).values("id")[0]['id']
         if request.POST['from'] == 'files_json':
+            id_list = []
             for files_id in request.POST.getlist('list_data'):
-                s3.delete_file(
-                    bucket_name, 
-                    models.json_files.objects.filter(id=files_id).values('file_name')[0]['file_name']
-                )
                 models.json_files.objects.filter(id = files_id).delete()
+                id_list.append(files_id)
+            threading.Thread (
+                target=delete_files,
+                args=(bucket_name, id_list,)
+            ).start()
         elif request.POST['from'] == 'form_json':
             file_json = { "Admobnumb": request.POST['Admobnumb'],
                 "Version": request.POST['Version'],
@@ -83,7 +88,10 @@ def files_json(request):
                 "NativeAdId": request.POST['NativeAdId']
             }
             file_name = create_file_name(bucket_id)
-            s3.add_file(bucket_name, file_name, file_json)
+            threading.Thread(
+                target=s3.add_file,
+                args=(bucket_name, file_name, file_json, )
+            ).start()
             models.json_files(
                     file_name = file_name,
                     content = json.dumps(file_json),
@@ -101,7 +109,10 @@ def files_json(request):
                 "RewardedAdId": request.POST['RewardedAdId'],
                 "NativeAdId": request.POST['NativeAdId']
             }
-            s3.add_file(bucket_name, file_name, file_json)
+            threading.Thread(
+                target=s3.add_file,
+                args=(bucket_name, file_name, file_json, )
+            ).start()
             new_file = models.json_files.objects.get(
                 file_name = file_name,
                 bucket = models.buckets.objects.filter(bucket_name=bucket_name).values("id")[0]['id']
@@ -195,3 +206,18 @@ def create_file_name(bucket_id: int):
         if int(name['file_name']) > new_name:
             new_name = int(name['file_name'])
     return new_name + 1
+
+def delete_buckets(id_list: list):
+    files = json_data.Data('json/data.json')
+    s3 = amazon.Amazon(files.get_data())
+    for bucket_id in id_list:
+        s3.delete_bucket(models.buckets.objects.filter(id = bucket_id).values('bucket_name')[0]['bucket_name'])
+
+def delete_files(bucket_name: str, id_list: list):
+    files = json_data.Data('json/data.json')
+    s3 = amazon.Amazon(files.get_data())
+    for file_id in id_list:
+        s3.delete_file(
+                    bucket_name, 
+                    models.json_files.objects.filter(id=file_id).values('file_name')[0]['file_name']
+                )

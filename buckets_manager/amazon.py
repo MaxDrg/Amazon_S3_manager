@@ -27,6 +27,8 @@ class Amazon:
         )
 
     def create_bucket(self, bucket_name, region_name):
+        print(bucket_name)
+        print(region_name)
         resource = {"Resource": f"arn:aws:s3:::{bucket_name}/*"}
         location = {'LocationConstraint': region_name}
         try:
@@ -74,26 +76,29 @@ class Amazon:
     def get_buckets(self):
         data = []
         for bucket in self.client.list_buckets()['Buckets']:
-            data.append(Bucket_data(
-                bucket["Name"], 
-                datetime.datetime.strftime(bucket['CreationDate'], "%d/%m/%y %H:%M"),
-                self.client.get_bucket_location(Bucket=bucket['Name'])['LocationConstraint']
-            ))
+            try:
+                data.append(Bucket_data(
+                    bucket['Name'], 
+                    datetime.datetime.strftime(bucket['CreationDate'], "%d/%m/%y %H:%M"),
+                    self.client.get_bucket_location(Bucket=bucket['Name'])['LocationConstraint']
+                ))
+            except:
+                pass
         return data
 
     def get_files(self, bucket_name):
         data = []
-        for file in self.client.list_objects(Bucket=bucket_name)['Contents']:
-            try:
+        try:
+            for file in self.client.list_objects(Bucket=bucket_name)['Contents']:
                 content = self.client.get_object(
                     Bucket = bucket_name,
                     Key = file['Key']
                 )
-            except:
-                pass
             data.append(File_data(
                 file['Key'].split('.')[0], 
                 datetime.datetime.strftime(file['LastModified'], "%d/%m/%y %H:%M"),
                 json.load(content['Body'])
             ))
+        except:
+            pass
         return data
