@@ -27,8 +27,6 @@ class Amazon:
         )
 
     def create_bucket(self, bucket_name, region_name):
-        print(bucket_name)
-        print(region_name)
         resource = {"Resource": f"arn:aws:s3:::{bucket_name}/*"}
         location = {'LocationConstraint': region_name}
         try:
@@ -45,14 +43,16 @@ class Amazon:
         return False
 
     def add_file(self, bucket_name, file_name, data):
+        response = False
         file_path = f"json/buffer{randint(10000, 999999)}.json"
         with open(file_path, "w") as file:
             json.dump(data, file, indent=2)
         try:
             self.client.upload_file(file_path, bucket_name, f"{file_name}.json")
-        except ClientError as e:
-            logging.error(e)
+        except:
+            response = True
         os.remove(file_path)
+        return response
 
     def delete_bucket(self, bucket_name):
         try:

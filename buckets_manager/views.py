@@ -88,10 +88,14 @@ def files_json(request):
                 "NativeAdId": request.POST['NativeAdId']
             }
             file_name = create_file_name(bucket_id)
-            threading.Thread(
-                target=s3.add_file,
-                args=(bucket_name, file_name, file_json, )
-            ).start()
+            if s3.add_file(bucket_name, file_name, file_json):
+                return render(request, "form_json.html", 
+                {
+                    "error_message": True,
+                    "current_sidebar": '', 
+                    "bucket_name": bucket_name, 
+                    "buckets_names": models.buckets.objects.values('bucket_name')
+                })
             models.json_files(
                     file_name = file_name,
                     content = json.dumps(file_json),
@@ -150,6 +154,7 @@ def form_json(request):
             })
     return render(request, "form_json.html", 
     {
+        "error_message": False,
         "current_sidebar": current_sidebar, 
         "bucket_name": bucket_name, 
         "buckets_names": models.buckets.objects.values('bucket_name')

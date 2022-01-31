@@ -2,6 +2,10 @@
 
 {% block content %}
 
+{% if error_message %}
+  <script>alert("Не удалось создать файл в этом бакете!")</script>
+{% endif %}
+
 <div id="page-wrapper">
   <div class="header">
     <h1 class="page-header">Создание JSON-файла</h1>
