@@ -215,7 +215,7 @@ def logs(request):
     {
         "current_sidebar": "logs", 
         "buckets_names": models.buckets.objects.all(),
-        "logs": models.logs.objects.all().reverse()
+        "logs": reversed(models.logs.objects.all())
     })
 
 def create_file_name(bucket_id: int):
