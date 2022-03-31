@@ -75,8 +75,9 @@ def files_json(request):
         bucket_id = models.buckets.objects.filter(bucket_name=bucket_name).values("id")[0]['id']
         if request.POST['from'] == 'files_json':
             file_names = []
-            for file_id in request.POST.getlist('list_data'),:
-                file_names.append(models.json_files.objects.filter(id=int(file_id)).values('file_name')[0]['file_name'])
+            for file_id in request.POST.getlist('list_data'):
+                print(file_id)
+                file_names.append(models.json_files.objects.filter(id=file_id).values('file_name')[0]['file_name'])
                 models.json_files.objects.filter(id=file_id).delete()
             threading.Thread (
                 target=delete_files,
