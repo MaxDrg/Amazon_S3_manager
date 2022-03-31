@@ -74,9 +74,13 @@ def files_json(request):
         s3 = amazon.Amazon(files.get_data())
         bucket_id = models.buckets.objects.filter(bucket_name=bucket_name).values("id")[0]['id']
         if request.POST['from'] == 'files_json':
+            file_names = []
+            for file_id in request.POST.getlist('list_data'),:
+                file_names.append(models.json_files.objects.filter(id=file_id).values('file_name')[0]['file_name'])
+                models.json_files.objects.filter(id=file_id).delete()
             threading.Thread (
                 target=delete_files,
-                args=(bucket_name, request.POST.getlist('list_data'),)
+                args=(bucket_name, file_names, )
             ).start()
         elif request.POST['from'] == 'form_json':
             file_json = { "Admobnumb": request.POST['Admobnumb'],
@@ -230,14 +234,12 @@ def delete_buckets(id_list: list):
         s3.delete_bucket(bucket_name)
         log.del_bucket(bucket_name)
 
-def delete_files(bucket_name: str, id_list: list):
+def delete_files(bucket_name: str, file_names: list):
     files = json_data.Data('json/data.json')
     s3 = amazon.Amazon(files.get_data())
-    for file_id in id_list:
-        file_number = models.json_files.objects.filter(id=file_id).values('file_name')[0]['file_name']
-        models.json_files.objects.filter(id=file_id).delete()
+    for file_name in file_names:
         s3.delete_file(
                     bucket_name, 
-                    file_number
+                    file_name
                 )
-        log.del_file(bucket_name, file_number)
+        log.del_file(bucket_name, file_name)
