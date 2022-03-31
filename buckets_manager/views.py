@@ -211,11 +211,13 @@ def settings(request):
     })
 
 def logs(request):
+    data = models.logs.objects.all().reverse()
+    print (data)
     return render(request, "logs.html", 
     {
         "current_sidebar": "logs", 
         "buckets_names": models.buckets.objects.all(),
-        "logs": models.logs.objects.all().reverse(),
+        "logs": data
     })
 
 def create_file_name(bucket_id: int):
