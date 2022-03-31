@@ -23,28 +23,21 @@
           <div class="card-content">
             <div class="table-responsive">
               <ul>
-                <li>
-                  <strong> 19:68  -  </strong>ipsum
-                </li>
-                <li>
-                  <strong> 19:68  -  </strong>ipsum
-                </li>
-                <li>
-                  <strong> 19:68  -  </strong>ipsum
-                </li>
-                <li>
-                  <strong> 19:68  -  </strong>ipsum
-                </li>
-                <li>
-                  <strong> 19:68  -  </strong>ipsum
-                </li>
-                <li>
-                  <strong> 19:68  -  </strong>ipsum
-                </li>
-                <li>
-                  <strong> 19:68  -  </strong>ipsum
-                </li>
-
+                {% for log in logs %}
+                  <li><strong> {{ log.time|date:'Y-m-d H:i' }} - </strong>
+                    {% if log.operation == 1 %}
+                      Создан бакет {{ log.bucket_name }}
+                    {% elif log.operation == 2 %}
+                      Удалён бакет {{ log.bucket_name }}
+                    {% elif log.operation == 3 %}
+                      Создан файл {{ log.file_name }} в бакете {{ log.bucket_name }}
+                    {% elif log.operation == 4 %}
+                      Удалён файл {{ log.file_name }} в бакете {{ log.bucket_name }}
+                    {% elif log.operation == 5 %}
+                      Изменён файл {{ log.file_name }} в бакете {{ log.bucket_name }}
+                    {% endif %}
+                  </li>
+                {% endfor %}
               </ul>
             </div>
           </div>
