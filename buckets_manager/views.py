@@ -211,7 +211,8 @@ def settings(request):
     })
 
 def logs(request):
-    data = models.logs.objects.all().reverse()
+    print("start")
+    data = models.logs.objects.all()
     print (data)
     return render(request, "logs.html", 
     {
