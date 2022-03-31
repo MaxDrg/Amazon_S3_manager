@@ -15,4 +15,4 @@ class logs(models.Model):
     operation = models.IntegerField("Operation's number", default=1)
     bucket_name = models.CharField("Bucket's name", max_length=255)
     file_name = models.CharField("File's name", max_length=255, null=True ,default=None)
-    #time = models.DateTimeField("Date/time")
+    date_time = models.DateTimeField("Date/time")
