@@ -74,13 +74,9 @@ def files_json(request):
         s3 = amazon.Amazon(files.get_data())
         bucket_id = models.buckets.objects.filter(bucket_name=bucket_name).values("id")[0]['id']
         if request.POST['from'] == 'files_json':
-            id_list = []
-            for files_id in request.POST.getlist('list_data'):
-                models.json_files.objects.filter(id = files_id).delete()
-                id_list.append(files_id)
             threading.Thread (
                 target=delete_files,
-                args=(bucket_name, id_list,)
+                args=(bucket_name, request.POST.getlist('list_data'),)
             ).start()
         elif request.POST['from'] == 'form_json':
             file_json = { "Admobnumb": request.POST['Admobnumb'],
