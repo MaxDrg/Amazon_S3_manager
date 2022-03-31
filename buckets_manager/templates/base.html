@@ -93,6 +93,16 @@
                             <a href="{% url 'settings' %}" class="waves-effect waves-dark"><i class="fa fa-gears"></i> Параметры</a>
                         </li>
                     {% endif %}
+
+                    {% if current_sidebar == "logs" %}
+                        <li>
+                            <a href="" class="active-menu waves-effect waves-dark"><i class="fa fa-list"></i> Логи</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'logs' %}" class="waves-effect waves-dark"><i class="fa fa-list"></i> Логи</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

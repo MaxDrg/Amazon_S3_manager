@@ -3,9 +3,12 @@ from django.shortcuts import render
 from . import amazon
 from . import json_data
 from . import models
+from . import log as l
 import threading
 import json
 import pytz
+
+log = l.Logs()
 
 class Bucket:
     def __init__(self, id, bucket_name, region_name,created ,count) -> None:
@@ -44,6 +47,7 @@ def buckets(request):
                     region_name = request.POST['region_name'],
                     created = datetime.now(pytz.timezone('Europe/Kiev')).strftime("%d/%m/%y %H:%M"),
                 ).save()
+                log.add_bucket(request.POST['bucket_name'])
     data = []
     for bucket in models.buckets.objects.all():
         data.append(Bucket(
@@ -102,6 +106,7 @@ def files_json(request):
                     last_update = datetime.now(pytz.timezone('Europe/Kiev')).strftime("%d/%m/%y %H:%M"),
                     bucket = models.buckets.objects.filter(bucket_name=bucket_name)[0]
                 ).save()
+            log.add_file(bucket_name, file_name)
         elif request.POST['from'] == 'change_json':
             file_name = request.POST['name']
             bucket_name = request.POST['bucket_name']
@@ -124,6 +129,7 @@ def files_json(request):
             new_file.content = json.dumps(file_json)
             new_file.last_update = datetime.now(pytz.timezone('Europe/Kiev')).strftime("%d/%m/%y %H:%M")
             new_file.save()
+            log.change_file(bucket_name, file_name)
     return render(request, "json.html", 
     {
         "current_sidebar": current_sidebar, 
@@ -204,6 +210,14 @@ def settings(request):
         "data": files.get_data()
     })
 
+def logs(request):
+    return render(request, "logs.html", 
+    {
+        "current_sidebar": "logs", 
+        "buckets_names": models.buckets.objects.all(),
+        "data": models.logs.objects.all().reverse(),
+    })
+
 def create_file_name(bucket_id: int):
     files = models.json_files.objects.filter(bucket=bucket_id).values('file_name')
     new_name = 0
@@ -216,13 +230,17 @@ def delete_buckets(id_list: list):
     files = json_data.Data('json/data.json')
     s3 = amazon.Amazon(files.get_data())
     for bucket_id in id_list:
-        s3.delete_bucket(models.buckets.objects.filter(id = bucket_id).values('bucket_name')[0]['bucket_name'])
+        bucket_name = models.buckets.objects.filter(id = bucket_id).values('bucket_name')[0]['bucket_name']
+        s3.delete_bucket(bucket_name)
+        log.del_bucket(bucket_name)
 
 def delete_files(bucket_name: str, id_list: list):
     files = json_data.Data('json/data.json')
     s3 = amazon.Amazon(files.get_data())
     for file_id in id_list:
+        file_number = models.json_files.objects.filter(id=file_id).values('file_name')[0]['file_name']
         s3.delete_file(
                     bucket_name, 
-                    models.json_files.objects.filter(id=file_id).values('file_name')[0]['file_name']
+                    file_number
                 )
+        log.del_file(bucket_name, file_number)

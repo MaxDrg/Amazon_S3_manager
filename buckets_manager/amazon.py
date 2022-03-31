@@ -1,10 +1,8 @@
 import os
 import json
 import boto3
-import logging
 import datetime
 from random import randint
-from botocore.exceptions import ClientError
 
 class Bucket_data:
     def __init__(self, name, date, region) -> None:
