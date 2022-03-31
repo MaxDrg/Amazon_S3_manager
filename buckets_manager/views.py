@@ -235,6 +235,7 @@ def delete_files(bucket_name: str, id_list: list):
     s3 = amazon.Amazon(files.get_data())
     for file_id in id_list:
         file_number = models.json_files.objects.filter(id=file_id).values('file_name')[0]['file_name']
+        models.json_files.objects.filter(id=file_id).delete()
         s3.delete_file(
                     bucket_name, 
                     file_number

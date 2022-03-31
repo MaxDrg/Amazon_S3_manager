@@ -45,7 +45,7 @@ class Logs:
             time = datetime.now()
         ).save()
 
-    def del_log():
+    def del_log(self):
         if len(models.logs.objects.all()) > 500:
             id = models.logs.objects.all()[0][id]
             models.logs.objects.filter(id = id).delete()
