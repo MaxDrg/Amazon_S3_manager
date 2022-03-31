@@ -24,17 +24,17 @@
             <div class="table-responsive">
               <ul>
                 {% for log in logs %}
-                  <li><strong> {{ log.time|date:'Y-m-d H:i' }} - </strong>
+                  <li><strong> {{ log.date_time|date:'Y-m-d H:i' }} - </strong>
                     {% if log.operation == 1 %}
-                      Создан бакет {{ log.bucket_name }}
+                      Создан бакет <strong>{{ log.bucket_name }}</strong>
                     {% elif log.operation == 2 %}
-                      Удалён бакет {{ log.bucket_name }}
+                      Удалён бакет <strong>{{ log.bucket_name }}</strong>
                     {% elif log.operation == 3 %}
-                      Создан файл {{ log.file_name }} в бакете {{ log.bucket_name }}
+                      Создан файл <strong>{{ log.file_name }}</strong> в бакете <strong>{{ log.bucket_name }}</strong>
                     {% elif log.operation == 4 %}
-                      Удалён файл {{ log.file_name }} в бакете {{ log.bucket_name }}
+                      Удалён файл <strong>{{ log.file_name }}</strong> в бакете <strong>{{ log.bucket_name }}</strong>
                     {% elif log.operation == 5 %}
-                      Изменён файл {{ log.file_name }} в бакете {{ log.bucket_name }}
+                      Изменён файл <strong>{{ log.file_name }}</strong> в бакете <strong>{{ log.bucket_name }}</strong>
                     {% endif %}
                   </li>
                 {% endfor %}
